@@ -1,0 +1,12 @@
+MySQL:
+  Host: localhost
+  User: root
+  Password: ''
+  Database: testbd
+Settings:
+  VKToken: "d239722d2650b693633a6b2000202f230ad0ec4db055ef48799de4d7dcd1e8ea95c88722a957f2abb0843"
+  DatabaseName: "Auth"
+  NameColumn: "Name"
+Strings:
+  AuthString: "Введите код из сообщения ВКонтакте"
+  OnLoginString: "Код верный"
