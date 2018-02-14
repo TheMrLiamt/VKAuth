@@ -42,7 +42,7 @@ public class AuthListener implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e) {
-        VKAuth.getMySQL().executeQuery("SELECT COUNT(*) FROM `"+ database +"` WHERE `"+ name +"` = '"+ e.getPlayer().getName().toLowerCase() +"'", (rs) -> {
+        VKAuth.getMySQL().executeQuery("SELECT COUNT(*) FROM `"+ this.database +"` WHERE `"+ this.name +"` = ?", (rs) -> {
 
             if(!rs.next()) {
                 vkAuth.addAuth(e.getPlayer());
@@ -51,7 +51,7 @@ public class AuthListener implements Listener {
 
             if(rs.getInt("COUNT(*)") != 0) {
 
-                VKAuth.getMySQL().executeQuery("SELECT * FROM `"+ database +"` WHERE `"+ name +"` = '"+ e.getPlayer().getName().toLowerCase() +"'", (r) -> {
+                VKAuth.getMySQL().executeQuery("SELECT * FROM `"+ this.database +"` WHERE `"+ this.name +"` = ?", (r) -> {
 
                     if(!r.next()) {
                         vkAuth.addAuth(e.getPlayer());
@@ -78,14 +78,14 @@ public class AuthListener implements Listener {
                     }
 
                     return Void.TYPE;
-                });
+                }, e.getPlayer().getName().toLowerCase());
 
             } else {
                 vkAuth.addAuth(e.getPlayer());
             }
 
             return Void.TYPE;
-        });
+        }, e.getPlayer().getName().toLowerCase());
     }
 
     @EventHandler
