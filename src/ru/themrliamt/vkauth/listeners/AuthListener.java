@@ -53,11 +53,18 @@ public class AuthListener implements Listener {
 
                 VKAuth.getMySQL().executeQuery("SELECT * FROM `"+ database +"` WHERE `"+ name +"` = '"+ e.getPlayer().getName().toLowerCase() +"'", (r) -> {
 
-                    if(!r.next()) return Void.TYPE;
+                    if(!r.next()) {
+                        VKAuth.getInstance().addAuth(e.getPlayer());
+                        return Void.TYPE;
+                    }
 
                     if(!vkAuth.isAuthed(e.getPlayer())) {
                         VKAuth.getInstance().sendCode(e.getPlayer().getName(), r.getString("VK_ID"));
 
+                        if(r.getString("VK_ID") == null || r.getString("VK_ID").equals("")) {
+                            VKAuth.getInstance().addAuth(e.getPlayer());
+                            return Void.TYPE;
+                        }
 
                         ScheduledTask task = BungeeCord.getInstance().getScheduler().schedule(vkAuth, () -> {
 
