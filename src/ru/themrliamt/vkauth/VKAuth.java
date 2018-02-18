@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-//Говнокод творит чудеса))
 public class VKAuth extends Plugin {
 
     private static VKAuth instance;

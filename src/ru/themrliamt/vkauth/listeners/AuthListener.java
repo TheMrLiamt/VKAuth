@@ -4,20 +4,16 @@ import com.google.common.collect.Maps;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
-import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
-import net.md_5.bungee.scheduler.BungeeScheduler;
 import ru.themrliamt.vkauth.VKAuth;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-//Говнокод творит чудеса))
 public class AuthListener implements Listener {
 
     private VKAuth vkAuth;
@@ -42,33 +38,33 @@ public class AuthListener implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e) {
-        VKAuth.getMySQL().executeQuery("SELECT COUNT(*) FROM `"+ this.database +"` WHERE `"+ this.name +"` = ?", (rs) -> {
+        VKAuth.getMySQL().executeQuery("SELECT COUNT(*) FROM `" + this.database + "` WHERE `" + this.name + "` = ?", (rs) -> {
 
-            if(!rs.next()) {
+            if (!rs.next()) {
                 vkAuth.addAuth(e.getPlayer());
                 return Void.TYPE;
             }
 
-            if(rs.getInt("COUNT(*)") != 0) {
+            if (rs.getInt("COUNT(*)") != 0) {
 
-                VKAuth.getMySQL().executeQuery("SELECT * FROM `"+ this.database +"` WHERE `"+ this.name +"` = ?", (r) -> {
+                VKAuth.getMySQL().executeQuery("SELECT * FROM `" + this.database + "` WHERE `" + this.name + "` = ?", (r) -> {
 
-                    if(!r.next()) {
+                    if (!r.next()) {
                         vkAuth.addAuth(e.getPlayer());
                         return Void.TYPE;
                     }
 
-                    if(!vkAuth.isAuthed(e.getPlayer())) {
+                    if (!vkAuth.isAuthed(e.getPlayer())) {
                         VKAuth.getInstance().sendCode(e.getPlayer().getName(), r.getString("VK_ID"));
 
-                        if(r.getString("VK_ID") == null || r.getString("VK_ID").equals("")) {
+                        if (r.getString("VK_ID") == null || r.getString("VK_ID").equals("")) {
                             VKAuth.getInstance().addAuth(e.getPlayer());
                             return Void.TYPE;
                         }
 
                         ScheduledTask task = BungeeCord.getInstance().getScheduler().schedule(vkAuth, () -> {
 
-                            if(vkAuth.isAuthed(e.getPlayer())) {
+                            if (vkAuth.isAuthed(e.getPlayer())) {
                                 return;
                             }
 
@@ -91,8 +87,8 @@ public class AuthListener implements Listener {
     @EventHandler
     public void onChat(ChatEvent e) {
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
-        if(!vkAuth.isAuthed(player)) {
-            if(vkAuth.checkCode(player, e.getMessage())) {
+        if (!vkAuth.isAuthed(player)) {
+            if (vkAuth.checkCode(player, e.getMessage())) {
                 player.sendMessage(ONLOGIN_STRING);
                 vkAuth.addAuth(player);
                 playerTasks.get(player.getName().toLowerCase()).cancel();

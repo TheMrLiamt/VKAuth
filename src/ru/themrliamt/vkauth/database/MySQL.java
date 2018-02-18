@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.*;
 
-//Говнокод творит чудеса))
 public class MySQL {
 
     final ExecutorService QUERY_EXECUTOR = Executors.newCachedThreadPool(

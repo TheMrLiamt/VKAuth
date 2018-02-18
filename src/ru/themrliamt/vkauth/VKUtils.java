@@ -1,12 +1,9 @@
 package ru.themrliamt.vkauth;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
-//Говнокод творит чудеса))
 public class VKUtils {
 
     private String VK_TOKEN;
@@ -17,16 +14,19 @@ public class VKUtils {
     }
 
     public void sendCode(String code, String user) {
-        String u = String.format(SEND_MESSAGE, VK_TOKEN, code, user);
 
         try {
+            String u = String.format(SEND_MESSAGE, VK_TOKEN, URLEncoder.encode("Ваш код для авторизации: " + code +
+                    "\nВведите его в игре.", "UTF-8"), user);
+
             URL obj = new URL(u);
             HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 
             connection.setRequestMethod("GET");
 
             connection.getInputStream().close();
-        } catch (IOException ignored) {}
+        } catch (Exception ignored) {
+        }
 
 
     }
