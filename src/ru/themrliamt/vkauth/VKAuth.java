@@ -61,7 +61,7 @@ public class VKAuth extends Plugin {
         return codes
                 .containsKey(player.getName().toLowerCase())
                 && codes.get(player.getName().toLowerCase())
-                .contains(code);
+                .equals(code);
     }
 
     public void sendCode(String player, String user) {
