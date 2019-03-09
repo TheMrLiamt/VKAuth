@@ -1,8 +1,9 @@
 package ru.themrliamt.vkauth;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class VKUtils {
 
@@ -16,11 +17,9 @@ public class VKUtils {
     public void sendCode(String code, String user) {
 
         try {
-            String u = String.format(SEND_MESSAGE, VK_TOKEN, URLEncoder.encode("Ваш код для авторизации: " + code +
-                    "\nВведите его в игре.", "UTF-8"), user);
-
-            URL obj = new URL(u);
-            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+            URL url = new URL(String.format(SEND_MESSAGE, VK_TOKEN, URLEncoder.encode("Ваш код для авторизации: " + code +
+                    "\nВведите его в игре.", "UTF-8"), user));
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
 
