@@ -20,6 +20,7 @@ public class MySQL {
     private Connection connection;
 
     public MySQL(String host, String user, String password, String database) {
+
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setUser(user);
         dataSource.setPassword(password);
